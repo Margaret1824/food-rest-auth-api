@@ -16,14 +16,7 @@ admin.initializeApp({
 });
 
 let db = admin.firestore();
-
-var start = new Date();
-var finish = new Date(start.setHours(start.getHours() + 2));
 var authDB = db.collection('authentication');
-
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
 
 app.post('/api/auth/addToken', (req, res) => {
   if (req.body != null) {
@@ -35,6 +28,8 @@ app.post('/api/auth/addToken', (req, res) => {
 
     var token = req.body.hash;
     var action = req.body.action;
+    let start = new Date();
+    let finish = new Date(start.setHours(start.getHours() + 2));
 
     let addDoc = authDB.add({
       hash: token,
@@ -54,10 +49,11 @@ app.post('/api/auth/addToken', (req, res) => {
       });
     });;
   }
-
-  res.status(403).send({
-    errorMessage: 'Could not add the token!'
-  });
+  else{
+    res.status(403).send({
+      errorMessage: 'Could not add the token!'
+    });
+  }
 });
 
 app.post('/api/auth/checkToken', (req, res) => {
